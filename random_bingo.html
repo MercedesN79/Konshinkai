@@ -1,0 +1,82 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>ビンゴカード</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      text-align: center;
+    }
+    table {
+      border-collapse: collapse;
+      margin: 0 auto;
+    }
+    td {
+      border: 1px solid #888;
+      width: 150px;
+      height: 80px;
+      padding: 8px;
+      vertical-align: middle;
+      text-align: center;
+      cursor: pointer;
+      background-color: white;
+      user-select: none;
+    }
+    td.marked {
+      background-color: lightgreen;
+    }
+    h1 {
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>ランダムビンゴ</h1>
+  <table id="bingo"></table>
+
+  <script>
+    const QUESTIONS = [
+      "映画が好きな人", "朝型の人", "海外旅行が好きな人", "犬派の人", "猫派の人",
+      "コーヒーが好きな人", "早起きが得意な人", "研究が楽しいと感じる人", "関西出身の人",
+      "夏が好きな人", "甘党の人", "ゲームが好きな人", "運動が趣味の人", "京都が初めての人",
+      "読書が趣味の人", "ラーメンが好きな人", "サウナが好きな人", "一人旅をしたことがある人",
+      "理系出身の人", "最近寝不足の人", "お酒が強い人", "B型の人", "アニメが好きな人",
+      "料理が好きな人", "左利きの人", "野球が好きな人", "音楽が趣味の人", "スマホはAndroid派",
+      "最近引っ越した人", "大学から京都に来た人"
+    ];
+
+    const SIZE = 4; // 4x4 ビンゴカード
+
+    function shuffle(array) {
+      return array.sort(() => Math.random() - 0.5);
+    }
+
+    function generateBingo() {
+      const table = document.getElementById("bingo");
+      table.innerHTML = ""; // 一度リセット
+
+      const shuffled = shuffle(QUESTIONS.slice());
+      const cells = shuffled.slice(0, SIZE * SIZE);
+
+      for (let row = 0; row < SIZE; row++) {
+        const tr = document.createElement("tr");
+        for (let col = 0; col < SIZE; col++) {
+          const idx = row * SIZE + col;
+          const td = document.createElement("td");
+          td.textContent = cells[idx];
+          td.addEventListener("click", () => {
+            td.classList.toggle("marked");
+          });
+          tr.appendChild(td);
+        }
+        table.appendChild(tr);
+      }
+    }
+
+    window.onload = generateBingo;
+  </script>
+</body>
+</html>
