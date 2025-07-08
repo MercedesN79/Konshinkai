@@ -35,12 +35,17 @@
       background-color: #ffffff;
       border-radius: 12px;
       border: 2px solid #ccc;
-      padding: 1rem;
+      height: 100px;
+      padding: 0.5rem;
       text-align: center;
       cursor: pointer;
       transition: background-color 0.3s ease;
-      font-size: 0.95rem;
-      user-select: none;
+      font-size: 0.9rem;
+      line-height: 1.2;
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
     .cell:hover {
       background-color: #f0f8ff;
@@ -60,8 +65,8 @@
     }
     @media (max-width: 600px) {
       .cell {
-        font-size: 0.8rem;
-        padding: 0.75rem;
+        font-size: 0.75rem;
+        padding: 0.3rem;
       }
     }
   </style>
@@ -81,107 +86,109 @@
 
   <script>
     const bingoData = [
-        { text: "コーヒーや紅茶などの飲み物にこだわっている", exclude: [] },
-  { text: "推し活にハマっている", exclude: ['広', '東'] },
-  { text: "自然の中で過ごすことにハマっている", exclude: ['名', '京', '広'] },
-  { text: "料理や食に関するブームがある", exclude: ['東'] },
-  { text: "動物やペットと過ごす時間が癒し", exclude: ['京', '九', '東'] },
-  { text: "ラジオやポッドキャストをよく聴く", exclude: ['京', '名', '広'] },
-  { text: "ゲーム実況・広告ゲーム・アプリ紹介動画を見ている", exclude: ['九', '東', '名'] },
-  { text: "冷蔵庫にヨーグルトを常備している", exclude: ['名'] },
-  { text: "スマホゲームを最近やり込んでいる", exclude: ['東'] },
-  { text: "自然の絶景（オーロラ・塩湖など）を見たい", exclude: [] },
-  { text: "とにかく海外に長期滞在してみたい", exclude: ['九', '名', '広'] },
-  { text: "猫や犬などペットと一緒に暮らしたい", exclude: ['京', '東'] },
-  { text: "縁側や畳の上でのんびり過ごしたい", exclude: ['名', '京', '東'] },
-  { text: "家族や友人とゆったり過ごすことが理想", exclude: ['名', '東'] },
-  { text: "老後はゲームや趣味を充実させたい", exclude: ['九', '名', '広'] },
-  { text: "思っていたより声や身長が違うと言われたことがある", exclude: ['京', '九', '名'] },
-  { text: "運動できそうと言われたけど運動苦手", exclude: ['京', '東', '九'] },
-  { text: "調理家電やキッチン用品を買って満足している", exclude: ['京', '名'] },
-  { text: "服や傘など日常のおしゃれ系アイテム", exclude: ['東', '九'] },
-      { text: "玉ねぎやねぎ類がよく入っている", exclude: ["東", "名"] },
-{ text: "納豆・豆腐などの発酵食品が好き", exclude: ["京", "名", "東"] },
-{ text: "甘い系（プリン・ゼリー・ジュースなど）を常備している", exclude: ["九"] },
-{ text: "冷凍ブルーベリーなど果物系をストックしている", exclude: ["九", "名"] },
-{ text: "牛乳（または低脂肪乳）を常備している", exclude: ["東", "名", "広"] },
-{ text: "冷蔵庫が酒やビールに占拠されている", exclude: ["京", "九", "東", "広"] },
-{ text: "香辛料や調味料にこだわっている（柚子胡椒・七味・にんにくなど）", exclude: ["京", "九"] },
-{ text: "ヨーロッパのどこかに行ってみたい", exclude: ["東"] },
-{ text: "世界遺産や古代遺跡めぐりに興味がある", exclude: ["広"] },
-{ text: "ディズニー好きで海外パークも行きたい", exclude: ["九", "名", "東"] },
-{ text: "寒い場所に行ってみたい（オーロラ・北欧など）", exclude: ["名", "京"] },
-{ text: "死後の世界や異世界に行きたいと言った人がいる", exclude: ["京", "名", "東", "広"] },
-{ text: "日本国内の水族館や城などに行きたい", exclude: ["広", "九"] },
-{ text: "自然の中で自給自足に近い暮らしをしたい", exclude: [] },
-{ text: "カフェや本屋など、趣味の延長の仕事を細々と続けたい", exclude: ["京", "東"] },
-{ text: "推し活を老後まで続けたい", exclude: ["京", "広", "東"] },
-{ text: "海外や世界一周などアクティブに過ごしたい", exclude: ["九", "名", "東"] },
-{ text: "昔のゲーム（レトロ系）にハマっている", exclude: ["京", "九", "広"] },
-{ text: "パズル・育成系のアプリが好き", exclude: ["九", "広"] },
-{ text: "家族や友人とゲームするのが楽しい", exclude: ["京", "名", "広"] },
-{ text: "野球・サッカーなどスポーツゲームが好き", exclude: ["九", "広"] },
-{ text: "放置系ゲームでコツコツ育てるのが好き", exclude: ["京", "広", "東"] },
-{ text: "広告に出てくる謎のゲームを実際にプレイしている", exclude: ["東", "九", "名"] },
-{ text: "怖そう・クールそうに見られるけど実は違うと言われたことがある", exclude: ["名", "京"] },
-{ text: "意外とよく喋る・よく笑うと言われがち", exclude: ["東", "九"] },
-{ text: "文科系・理系などの所属と印象にギャップがある", exclude: ["東", "九"] },
-{ text: "強面なのに優しい・気弱などのギャップがある", exclude: ["京", "名", "東"] },
-{ text: "生活雑貨・日用品でQOL爆上がり", exclude: ["東"] },
-{ text: "スマホ・イヤホン・PC周辺機器などガジェットを購入", exclude: ["京", "九"] },
-{ text: "インテリアやおしゃれ家電にこだわって買い物した", exclude: ["名", "東"] },
-{ text: "推しやキャラもののグッズを最近買ってテンションUP", exclude: ["名", "広"] },
-{ text: "ゲーム機やソフトを最近購入した", exclude: ["東", "広"] },
-{ text: "最近スマホで写真をたくさん撮った", exclude: [] },
-{ text: "今日はコーヒーまたはお茶を飲んだ", exclude: [] },
-{ text: "朝食を食べる習慣がある", exclude: [] },
-{ text: "旅行の計画を立てるのが好き", exclude: [] },
-{ text: "最近漫画かアニメを見た", exclude: [] },
-{ text: "日記やメモを毎日書いている", exclude: [] },
-{ text: "最近誰かに本を勧めたことがある", exclude: [] },
-{ text: "最近スーパーや市場で衝動買いをした", exclude: [] },
-{ text: "パズルや謎解きが好き", exclude: [] },
-{ text: "一度でもライブ・演劇・コンサートに行ったことがある", exclude: [] },
-{ text: "観光地でお土産を買うタイプ", exclude: [] },
-{ text: "最近ラーメンまたはうどんを食べた", exclude: [] },
-{ text: "行列に並ぶのがわりと平気", exclude: [] },
-{ text: "手帳やカレンダーに予定を書き込む派", exclude: [] },
-{ text: "動画サイトを1日30分以上見ることが多い", exclude: [] },
-{ text: "スマホのアプリを最近1つ以上入れた", exclude: [] },
-{ text: "最近誰かにプレゼントを渡した", exclude: [] },
-{ text: "無印・ニトリ・100均などに最近行った", exclude: [] },
-{ text: "観葉植物や花を育てたことがある", exclude: [] },
-{ text: "音楽を聴きながら作業することが多い", exclude: [] },
-{ text: "好きな映画を何度も観るタイプ", exclude: [] },
-{ text: "文房具を集めがち", exclude: [] },
-{ text: "最近なにかを断捨離した", exclude: [] },
-{ text: "アイスまたはお菓子を毎週食べている", exclude: [] },
-{ text: "最近新しいレシピに挑戦した", exclude: [] },
-{ text: "1日1回は深呼吸を意識している", exclude: [] },
-{ text: "街中や自然の中を散歩するのが好き", exclude: [] },
-{ text: "寝る前にスマホを見る習慣がある", exclude: [] },
-{ text: "おみくじや占いを信じるほうだ", exclude: [] },
-{ text: "人におすすめしたい場所が1つある", exclude: [] },
-{ text: "電車やバスの中でよく何かを読んでいる", exclude: [] },
-{ text: "朝シャワー派、または夜シャワー派がはっきりしている", exclude: [] },
-{ text: "今の季節が好きだと思える", exclude: [] },
-{ text: "最近、道に迷った・逆方向に進んだ", exclude: [] },
-{ text: "好きな色がはっきりしている", exclude: [] },
-{ text: "お金の管理に工夫している", exclude: [] },
-{ text: "誰かと日々、面白い言葉や表現を共有している", exclude: [] },
-{ text: "知らない場所でも平気で歩けるタイプ", exclude: [] },
-{ text: "こだわりの文房具・持ち物がある", exclude: [] },
-{ text: "最近、昔の友人や家族と再会した", exclude: [] },
-{ text: "マイボトルやエコバッグを持ち歩いている", exclude: [] },
-{ text: "新しいことにチャレンジ中", exclude: [] },
-{ text: "人に話しかけるきっかけに困らない", exclude: [] },
-{ text: "イベントごとに参加するのが好き", exclude: [] },
-{ text: "SNSに何か投稿したことがある", exclude: [] },
-{ text: "部屋のレイアウトを最近変えた", exclude: [] },
-{ text: "好きな食べ物について30分語れる", exclude: [] },
-{ text: "好きな季節になるとテンションが上がる", exclude: [] },
-{ text: "初対面の人と話すのが案外平気", exclude: [] }
-
+      // ここにビンゴマス候補を貼り付けてください
+       { text: "コーヒーや紅茶などの飲み物にこだわっている", exclude: [] },
+    { text: "推し活にハマっている", exclude: ["広", "東"] },
+    { text: "自然の中で過ごすことにハマっている", exclude: ["名", "京", "広"] },
+    { text: "料理や食に関するブームがある", exclude: ["東"] },
+    { text: "動物やペットと過ごす時間が癒し", exclude: ["京", "九", "東"] },
+    { text: "ラジオやポッドキャストをよく聴く", exclude: ["京", "名", "広"] },
+    { text: "ゲーム実況・広告ゲーム・アプリ紹介動画を見ている", exclude: ["九", "東", "名"] },
+    { text: "何かを『集める・探す』のがマイブーム", exclude: ["名", "東"] },
+    { text: "冷蔵庫にヨーグルトを常備している", exclude: ["名"] },
+    { text: "玉ねぎやねぎ類がよく入っている", exclude: ["東", "名"] },
+    { text: "納豆・豆腐などの発酵食品が好き", exclude: ["京", "名", "東"] },
+    { text: "甘い系（プリン・ゼリー・ジュースなど）を常備している", exclude: ["九"] },
+    { text: "冷凍ブルーベリーなど果物系をストックしている", exclude: ["九", "名"] },
+    { text: "牛乳（または低脂肪乳）を常備している", exclude: ["東", "名", "広"] },
+    { text: "冷蔵庫が酒やビールに占拠されている", exclude: ["京", "九", "東", "広"] },
+    { text: "香辛料や調味料にこだわっている（柚子胡椒・七味・にんにくなど）", exclude: ["京", "九"] },
+    { text: "ヨーロッパのどこかに行ってみたい", exclude: ["東"] },
+    { text: "自然の絶景（オーロラ・塩湖など）を見たい", exclude: [] },
+    { text: "世界遺産や古代遺跡めぐりに興味がある", exclude: ["広"] },
+    { text: "ディズニー好きで海外パークも行きたい", exclude: ["九", "名", "東"] },
+    { text: "とにかく海外に長期滞在してみたい", exclude: ["九", "名", "広"] },
+    { text: "寒い場所に行ってみたい（オーロラ・北欧など）", exclude: ["名", "京"] },
+    { text: "死後の世界や異世界に行きたいと言った人がいる", exclude: ["京", "名", "東", "広"] },
+    { text: "日本国内の水族館や城などに行きたい", exclude: ["広", "九"] },
+    { text: "猫や犬などペットと一緒に暮らしたい", exclude: ["京", "東"] },
+    { text: "自然の中で自給自足に近い暮らしをしたい", exclude: [] },
+    { text: "縁側や畳の上でのんびり過ごしたい", exclude: ["名", "京", "東"] },
+    { text: "カフェや本屋など、趣味の延長の仕事を細々と続けたい", exclude: ["京", "東"] },
+    { text: "家族や友人とゆったり過ごすことが理想", exclude: ["名", "東"] },
+    { text: "推し活を老後まで続けたい", exclude: ["京", "広", "東"] },
+    { text: "海外や世界一周などアクティブに過ごしたい", exclude: ["九", "名", "東"] },
+    { text: "老後はゲームや趣味を充実させたい", exclude: ["九", "名", "広"] },
+    { text: "スマホゲームを最近やり込んでいる", exclude: ["東"] },
+    { text: "昔のゲーム（レトロ系）にハマっている", exclude: ["京", "九", "広"] },
+    { text: "パズル・育成系のアプリが好き", exclude: ["九", "広"] },
+    { text: "家族や友人とゲームするのが楽しい", exclude: ["京", "名", "広"] },
+    { text: "野球・サッカーなどスポーツゲームが好き", exclude: ["九", "広"] },
+    { text: "放置系ゲームでコツコツ育てるのが好き", exclude: ["京", "広", "東"] },
+    { text: "広告に出てくる謎のゲームを実際にプレイしている", exclude: ["東", "九", "名"] },
+    { text: "怖そう・クールそうに見られるけど実は違うと言われたことがある", exclude: ["名", "京"] },
+    { text: "意外とよく喋る・よく笑うと言われがち", exclude: ["東", "九"] },
+    { text: "文科系・理系などの所属と印象にギャップがある", exclude: ["東", "九"] },
+    { text: "運動できそうと言われたけど運動苦手", exclude: ["京", "東", "九"] },
+    { text: "思っていたより声や身長が違うと言われたことがある", exclude: ["京", "九", "名"] },
+    { text: "強面なのに優しい・気弱などのギャップがある", exclude: ["京", "名", "東"] },
+    { text: "調理家電やキッチン用品を買って満足している", exclude: ["京", "名"] },
+    { text: "生活雑貨・日用品でQOL爆上がり", exclude: ["東"] },
+    { text: "スマホ・イヤホン・PC周辺機器などガジェットを購入", exclude: ["京", "九"] },
+    { text: "インテリアやおしゃれ家電にこだわって買い物した", exclude: ["名", "東"] },
+    { text: "推しやキャラもののグッズを最近買ってテンションUP", exclude: ["名", "広"] },
+    { text: "ゲーム機やソフトを最近購入した", exclude: ["東", "広"] },
+    { text: "服や傘など日常のおしゃれ系アイテム", exclude: ["東", "九"] },
+    // 以下は一般マス（すべてexclude: []）
+    { text: "最近スマホで写真をたくさん撮った", exclude: [] },
+    { text: "今日はコーヒーまたはお茶を飲んだ", exclude: [] },
+    { text: "朝食を食べる習慣がある", exclude: [] },
+    { text: "旅行の計画を立てるのが好き", exclude: [] },
+    { text: "最近漫画かアニメを見た", exclude: [] },
+    { text: "日記やメモを毎日書いている", exclude: [] },
+    { text: "最近誰かに本を勧めたことがある", exclude: [] },
+    { text: "最近スーパーや市場で衝動買いをした", exclude: [] },
+    { text: "パズルや謎解きが好き", exclude: [] },
+    { text: "一度でもライブ・演劇・コンサートに行ったことがある", exclude: [] },
+    { text: "観光地でお土産を買うタイプ", exclude: [] },
+    { text: "最近ラーメンまたはうどんを食べた", exclude: [] },
+    { text: "行列に並ぶのがわりと平気", exclude: [] },
+    { text: "手帳やカレンダーに予定を書き込む派", exclude: [] },
+    { text: "動画サイトを1日30分以上見ることが多い", exclude: [] },
+    { text: "スマホのアプリを最近1つ以上入れた", exclude: [] },
+    { text: "最近誰かにプレゼントを渡した", exclude: [] },
+    { text: "無印・ニトリ・100均などに最近行った", exclude: [] },
+    { text: "観葉植物や花を育てたことがある", exclude: [] },
+    { text: "音楽を聴きながら作業することが多い", exclude: [] },
+    { text: "好きな映画を何度も観るタイプ", exclude: [] },
+    { text: "文房具を集めがち", exclude: [] },
+    { text: "最近なにかを断捨離した", exclude: [] },
+    { text: "アイスまたはお菓子を毎週食べている", exclude: [] },
+    { text: "最近新しいレシピに挑戦した", exclude: [] },
+    { text: "1日1回は深呼吸を意識している", exclude: [] },
+    { text: "街中や自然の中を散歩するのが好き", exclude: [] },
+    { text: "寝る前にスマホを見る習慣がある", exclude: [] },
+    { text: "おみくじや占いを信じるほうだ", exclude: [] },
+    { text: "人におすすめしたい場所が1つある", exclude: [] },
+    { text: "電車やバスの中でよく何かを読んでいる", exclude: [] },
+    { text: "朝シャワー派、または夜シャワー派がはっきりしている", exclude: [] },
+    { text: "今の季節が好きだと思える", exclude: [] },
+    { text: "最近、道に迷った・逆方向に進んだ", exclude: [] },
+    { text: "好きな色がはっきりしている", exclude: [] },
+    { text: "お金の管理に工夫している", exclude: [] },
+    { text: "誰かと日々、面白い言葉や表現を共有している", exclude: [] },
+    { text: "知らない場所でも平気で歩けるタイプ", exclude: [] },
+    { text: "こだわりの文房具・持ち物がある", exclude: [] },
+    { text: "最近、昔の友人や家族と再会した", exclude: [] },
+    { text: "マイボトルやエコバッグを持ち歩いている", exclude: [] },
+    { text: "新しいことにチャレンジ中", exclude: [] },
+    { text: "人に話しかけるきっかけに困らない", exclude: [] },
+    { text: "イベントごとに参加するのが好き", exclude: [] },
+    { text: "SNSに何か投稿したことがある", exclude: [] },
+    { text: "部屋のレイアウトを最近変えた", exclude: [] },
+    { text: "好きな食べ物について30分語れる", exclude: [] },
+    { text: "好きな季節になるとテンションが上がる", exclude: [] },
+    { text: "初対面の人と話すのが案外平気", exclude: [] }
     ];
 
     const universitySelect = document.getElementById('universitySelect');
@@ -200,13 +207,14 @@
 
       const freeIndexes = [5, 6, 9, 10];
       const randomFree = freeIndexes[Math.floor(Math.random() * freeIndexes.length)];
+      selected16[randomFree] = { text: "FREE", exclude: [] };
 
       bingoBoard.innerHTML = '';
       selected16.forEach((item, i) => {
         const div = document.createElement('div');
         div.className = 'cell';
         div.textContent = item.text;
-        if (i === randomFree) {
+        if (item.text === "FREE") {
           div.classList.add('free', 'selected');
         }
         div.addEventListener('click', () => {
