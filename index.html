@@ -31,22 +31,21 @@
       width: 100%;
       max-width: 500px;
     }
-    .cell {
-      background-color: #ffffff;
-      border-radius: 12px;
-      border: 2px solid #ccc;
-      height: 100px;
-      padding: 0.5rem;
-      text-align: center;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-      font-size: 0.9rem;
-      line-height: 1.2;
-      display: -webkit-box;
-      -webkit-line-clamp: 4;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
+.cell {
+  display: flex;
+  align-items: center;      /* 縦方向の中央揃え */
+  justify-content: center;  /* 横方向の中央揃え */
+  text-align: center;       /* テキストの中央寄せ */
+  background-color: #ffffff;
+  border-radius: 12px;
+  border: 2px solid #ccc;
+  padding: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 0.95rem;
+  user-select: none;
+  min-height: 100px;        /* マスの高さをある程度固定化（任意調整可） */
+}
     .cell:hover {
       background-color: #f0f8ff;
     }
