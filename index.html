@@ -1,57 +1,87 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>大学院生懇親会ビンゴ</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>大学院生懇親ビンゴ</title>
   <style>
     body {
-      font-family: sans-serif;
-      text-align: center;
-      margin: 20px;
+      font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+      background: linear-gradient(to bottom right, #f0f4ff, #e1f0e5);
+      margin: 0;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
-    #bingo {
+    h1 {
+      color: #2d3e50;
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+    select {
+      font-size: 1rem;
+      padding: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .bingo-board {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 5px;
-      max-width: 600px;
-      margin: 20px auto;
+      gap: 0.5rem;
+      width: 100%;
+      max-width: 500px;
     }
     .cell {
-      padding: 10px;
-      border: 1px solid #999;
-      border-radius: 6px;
-      min-height: 60px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      background-color: #f9f9f9;
+      background-color: #ffffff;
+      border-radius: 12px;
+      border: 2px solid #ccc;
+      padding: 1rem;
+      text-align: center;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      font-size: 0.95rem;
+      user-select: none;
     }
-    .free {
-      background-color: #ffe4b5;
+    .cell:hover {
+      background-color: #f0f8ff;
+    }
+    .cell.selected {
+      background-color: #c6e2ff;
+    }
+    .cell.free {
+      background-color: #a7e6b2 !important;
       font-weight: bold;
+    }
+    .bingo-message {
+      margin-top: 1rem;
+      font-size: 1.2rem;
+      color: #2b9348;
+      display: none;
+    }
+    @media (max-width: 600px) {
+      .cell {
+        font-size: 0.8rem;
+        padding: 0.75rem;
+      }
     }
   </style>
 </head>
 <body>
-  <h1>大学院生懇親会ビンゴ</h1>
-  <label for="university">所属大学を選んでください：</label>
-  <select id="university">
-    <option value="">--選択--</option>
+  <h1>大学院生懇親ビンゴ</h1>
+  <select id="universitySelect">
+    <option value="">所属大学を選択してください</option>
     <option value="京">京都大学</option>
-    <option value="九">九州大学</option>
-    <option value="広">広島大学</option>
     <option value="東">東京大学</option>
     <option value="名">名古屋大学</option>
+    <option value="九">九州大学</option>
+    <option value="広">広島大学</option>
   </select>
-  <button onclick="generateBingo()">ビンゴ生成</button>
-
-  <div id="bingo"></div>
+  <div class="bingo-board" id="bingoBoard"></div>
+  <div class="bingo-message" id="bingoMessage">ビンゴ成立！🎉</div>
 
   <script>
     const bingoData = [
-     { text: "コーヒーや紅茶などの飲み物にこだわっている", exclude: [] }, 
+        { text: "コーヒーや紅茶などの飲み物にこだわっている", exclude: [] },
   { text: "推し活にハマっている", exclude: ['広', '東'] },
   { text: "自然の中で過ごすことにハマっている", exclude: ['名', '京', '広'] },
   { text: "料理や食に関するブームがある", exclude: ['東'] },
@@ -70,7 +100,7 @@
   { text: "運動できそうと言われたけど運動苦手", exclude: ['京', '東', '九'] },
   { text: "調理家電やキッチン用品を買って満足している", exclude: ['京', '名'] },
   { text: "服や傘など日常のおしゃれ系アイテム", exclude: ['東', '九'] },
-  { text: "玉ねぎやねぎ類がよく入っている", exclude: ["東", "名"] },
+      { text: "玉ねぎやねぎ類がよく入っている", exclude: ["東", "名"] },
 { text: "納豆・豆腐などの発酵食品が好き", exclude: ["京", "名", "東"] },
 { text: "甘い系（プリン・ゼリー・ジュースなど）を常備している", exclude: ["九"] },
 { text: "冷凍ブルーベリーなど果物系をストックしている", exclude: ["九", "名"] },
@@ -151,40 +181,54 @@
 { text: "好きな食べ物について30分語れる", exclude: [] },
 { text: "好きな季節になるとテンションが上がる", exclude: [] },
 { text: "初対面の人と話すのが案外平気", exclude: [] }
-    ];];
-</script>
 
+    ];
+
+    const universitySelect = document.getElementById('universitySelect');
+    const bingoBoard = document.getElementById('bingoBoard');
+    const bingoMessage = document.getElementById('bingoMessage');
+
+    universitySelect.addEventListener('change', generateBingo);
 
     function generateBingo() {
-      const uni = document.getElementById("university").value;
-      if (!uni) {
-        alert("大学を選んでください");
-        return;
-      }
+      const selected = universitySelect.value;
+      if (!selected) return;
 
-      const candidates = bingoData.filter(d => !d.exclude.includes(uni));
-      const selected = candidates.sort(() => 0.5 - Math.random()).slice(0, 15);
+      const filtered = bingoData.filter(item => !item.exclude.includes(selected));
+      const shuffled = filtered.sort(() => 0.5 - Math.random());
+      const selected16 = shuffled.slice(0, 16);
 
-      // ランダムなFreeマス位置（中央除く）: index 5,6,9,10
-      const freePositions = [5, 6, 9, 10];
-      const freeIndex = freePositions[Math.floor(Math.random() * freePositions.length)];
+      const freeIndexes = [5, 6, 9, 10];
+      const randomFree = freeIndexes[Math.floor(Math.random() * freeIndexes.length)];
 
-      const bingoContainer = document.getElementById("bingo");
-      bingoContainer.innerHTML = "";
-
-      let counter = 0;
-      for (let i = 0; i < 16; i++) {
-        const cell = document.createElement("div");
-        cell.className = "cell";
-        if (i === freeIndex) {
-          cell.classList.add("free");
-          cell.innerText = "FREE";
-        } else {
-          cell.innerText = selected[counter].text;
-          counter++;
+      bingoBoard.innerHTML = '';
+      selected16.forEach((item, i) => {
+        const div = document.createElement('div');
+        div.className = 'cell';
+        div.textContent = item.text;
+        if (i === randomFree) {
+          div.classList.add('free', 'selected');
         }
-        bingoContainer.appendChild(cell);
-      }
+        div.addEventListener('click', () => {
+          if (!div.classList.contains('free')) {
+            div.classList.toggle('selected');
+            checkBingo();
+          }
+        });
+        bingoBoard.appendChild(div);
+      });
+    }
+
+    function checkBingo() {
+      const cells = [...bingoBoard.children];
+      const indexes = cells.map((c, i) => c.classList.contains('selected') ? i : -1).filter(i => i !== -1);
+      const lines = [
+        [0,1,2,3], [4,5,6,7], [8,9,10,11], [12,13,14,15],
+        [0,4,8,12], [1,5,9,13], [2,6,10,14], [3,7,11,15],
+        [0,5,10,15], [3,6,9,12]
+      ];
+      const hasBingo = lines.some(line => line.every(i => indexes.includes(i)));
+      bingoMessage.style.display = hasBingo ? 'block' : 'none';
     }
   </script>
 </body>
