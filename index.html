@@ -72,7 +72,7 @@
     text-align: center;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    font-size: 0.95rem;
+    font-size: clamp(0.7rem, 2.2vw, 0.95rem);
     user-select: none;
     color: #222;
     display: flex;
@@ -81,6 +81,9 @@
     height: 100px;
     box-sizing: border-box;
     text-align: center;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.2;
   }
 
   .cell:hover {
@@ -105,8 +108,8 @@
 
   @media (max-width: 600px) {
     .cell {
-      font-size: 0.8rem;
-      padding: 0.5rem;
+      font-size: clamp(0.65rem, 2vw, 0.85rem);
+      padding: 0.4rem;
       height: 90px;
     }
     select {
