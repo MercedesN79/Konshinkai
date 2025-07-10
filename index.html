@@ -91,11 +91,17 @@
   background-color: #e0f7ff; /* ← hover時の色だけ変更OK */
 　}
 
-　.cell.selected {
+.cell.selected {
   background-color: #7ecfff !important; /* 濃い青で視認性アップ */
   color: #fff;
   font-weight: bold;
-　}
+}
+
+/* ← ここに追加 */
+.cell.selected:hover {
+  background-color: #7ecfff !important;
+  color: #fff;
+}
 
   .cell.free {
     background-color: #a7e6b2 !important;
