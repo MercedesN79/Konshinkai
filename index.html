@@ -277,7 +277,7 @@ function generateBingo() {
   const selected = universitySelect.value;
   if (!selected) return;
 
-  alreadyBingo = false; // ←ここを忘れずに追加！
+  alreadyBingo = false;
 
   const filtered = bingoData.filter(item => !item.exclude.includes(selected));
   const shuffled = filtered.sort(() => 0.5 - Math.random());
@@ -296,15 +296,15 @@ function generateBingo() {
       div.classList.add('free', 'selected');
     }
     div.addEventListener('click', () => {
-  if (!div.classList.contains('free')) {
-    div.classList.toggle('selected'); // ← 先に選択状態にする
-    checkBingo(); // ← そのあとでチェックする
-  }
-});
-
+      if (!div.classList.contains('free')) {
+        div.classList.toggle('selected');
+        checkBingo();
+      }
     });
-    bingoBoard.appendChild(div);
+    bingoBoard.appendChild(div); // ← ここにあるのが正しい
   });
+}
+);
 }
 
 
