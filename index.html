@@ -295,12 +295,13 @@ function generateBingo() {
     if (item.text === "FREE") {
       div.classList.add('free', 'selected');
     }
-   div.addEventListener('click', () => {
-  if (!div.classList.contains('free')) {
-    div.classList.add('selected');  // ← toggle ではなく add に変更
-    checkBingo();  // ← 確実に selected されたあとに呼び出す
+  div.addEventListener('click', () => {
+  if (!div.classList.contains('free') && !div.classList.contains('selected')) {
+    div.classList.add('selected');
+    checkBingo();
   }
 });
+
 
     bingoBoard.appendChild(div);
   });
