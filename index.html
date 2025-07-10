@@ -277,7 +277,8 @@ function generateBingo() {
   const selected = universitySelect.value;
   if (!selected) return;
 
-  alreadyBingo = false;
+  let previousBingoLine = null; // 直前に成立したビンゴのマス列
+
 
   const filtered = bingoData.filter(item => !item.exclude.includes(selected));
   const shuffled = filtered.sort(() => 0.5 - Math.random());
@@ -313,10 +314,10 @@ function generateBingo() {
 let alreadyBingo = false; // ← 最初はfalse
 
 function checkBingo() {
-  if (alreadyBingo) return; // ← 2回目以降は何もしない
-
   const cells = [...bingoBoard.children];
-  const indexes = cells.map((c, i) => c.classList.contains('selected') ? i : -1).filter(i => i !== -1);
+  const selectedIndexes = cells
+    .map((c, i) => c.classList.contains('selected') ? i : -1)
+    .filter(i => i !== -1);
 
   const lines = [
     [0,1,2,3], [4,5,6,7], [8,9,10,11], [12,13,14,15],
@@ -324,17 +325,32 @@ function checkBingo() {
     [0,5,10,15], [3,6,9,12]
   ];
 
-  const bingoLine = lines.find(line => line.every(i => indexes.includes(i)));
+  // いったんすべての .bingo-hit を除去
+  cells.forEach(cell => cell.classList.remove('bingo-hit'));
 
-  if (bingoLine) {
-    bingoLine.forEach(i => cells[i].classList.add('bingo-hit'));
-    bingoMessage.style.display = 'block';
-    setTimeout(() => {
-      bingoMessage.style.display = 'none';
-    }, 3000);
-    alreadyBingo = true; // ← これで一度しか出ない
+  // 新たに成立しているビンゴラインを探す
+  const newBingoLine = lines.find(line => line.every(i => selectedIndexes.includes(i)));
+
+  if (newBingoLine) {
+    newBingoLine.forEach(i => cells[i].classList.add('bingo-hit'));
+
+    // 前回のラインと違えば演出
+    if (
+      !previousBingoLine ||
+      previousBingoLine.length !== newBingoLine.length ||
+      !previousBingoLine.every((val, idx) => val === newBingoLine[idx])
+    ) {
+      bingoMessage.style.display = 'block';
+      setTimeout(() => {
+        bingoMessage.style.display = 'none';
+      }, 3000);
+      previousBingoLine = [...newBingoLine];
+    }
+  } else {
+    previousBingoLine = null; // ビンゴ状態解除
   }
 }
+
 
 
   </script>
