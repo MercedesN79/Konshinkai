@@ -102,27 +102,30 @@
     font-weight: bold;
   }
 
-  .bingo-message {
-  position: fixed;
-  top: 40%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 2rem;
-  padding: 1rem 2rem;
-  background: rgba(0, 128, 0, 0.85); /* 濃い緑で目立つ */
+ .bingo-message {
+  margin-top: 1rem;
+  font-size: 1.5rem;
   color: #fff;
-  border: 3px solid #fff;
-  border-radius: 10px;
+  background: rgba(43, 147, 72, 0.9);
+  padding: 0.8rem 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.3);
+  animation: pop-in 0.5s ease;
   display: none;
-  z-index: 1000;
-  animation: pop 1s ease-in-out infinite alternate;
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
+  z-index: 10;
 }
 
-@keyframes pop {
-  0% { transform: translate(-50%, -50%) scale(1); }
-  100% { transform: translate(-50%, -50%) scale(1.1); }
+@keyframes pop-in {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
+
 
 /* ビンゴ成立マスのスタイル */
 .cell.bingo-hit {
@@ -294,7 +297,7 @@
       });
     }
 
-    function checkBingo() {
+   function checkBingo() {
   const cells = [...bingoBoard.children];
   const indexes = cells.map((c, i) => c.classList.contains('selected') ? i : -1).filter(i => i !== -1);
   const lines = [
@@ -302,19 +305,15 @@
     [0,4,8,12], [1,5,9,13], [2,6,10,14], [3,7,11,15],
     [0,5,10,15], [3,6,9,12]
   ];
+  const hasBingo = lines.some(line => line.every(i => indexes.includes(i)));
 
-  // 既存のbingo-hitクラスをリセット
-  cells.forEach(cell => cell.classList.remove('bingo-hit'));
-
-  const hasBingo = lines.some(line => {
-    const isBingo = line.every(i => indexes.includes(i));
-    if (isBingo) {
-      line.forEach(i => cells[i].classList.add('bingo-hit'));
-    }
-    return isBingo;
-  });
-
-  bingoMessage.style.display = hasBingo ? 'block' : 'none';
+  if (hasBingo) {
+    bingoMessage.style.display = 'block';
+    // 👇 ここを追加
+    setTimeout(() => {
+      bingoMessage.style.display = 'none';
+    }, 3000); // 3秒後に消す
+  }
 }
 
   </script>
