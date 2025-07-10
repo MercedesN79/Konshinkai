@@ -271,7 +271,7 @@
     const bingoBoard = document.getElementById('bingoBoard');
     const bingoMessage = document.getElementById('bingoMessage');
 
-    universitySelect.addEventListener('change', generateBingo);
+   universitySelect.addEventListener('change', generateBingo);
 
 function generateBingo() {
   const selected = universitySelect.value;
@@ -301,11 +301,10 @@ function generateBingo() {
         checkBingo();
       }
     });
-    bingoBoard.appendChild(div); // ← ここにあるのが正しい
+    bingoBoard.appendChild(div);
   });
 }
-);
-}
+
 
 
 let alreadyBingo = false; // ← 最初はfalse
