@@ -267,92 +267,86 @@
     { text: "初対面の人と話すのは平気", exclude: [] }
     ];
 
-    const universitySelect = document.getElementById('universitySelect');
-    const bingoBoard = document.getElementById('bingoBoard');
-    const bingoMessage = document.getElementById('bingoMessage');
+  const universitySelect = document.getElementById('universitySelect');
+  const bingoBoard = document.getElementById('bingoBoard');
+  const bingoMessage = document.getElementById('bingoMessage');
 
-   universitySelect.addEventListener('change', generateBingo);
+  let previousBingoLine = null; // 前回のビンゴライン
 
-function generateBingo() {
-  const selected = universitySelect.value;
-  if (!selected) return;
+  universitySelect.addEventListener('change', generateBingo);
 
-  let previousBingoLine = null; // 直前に成立したビンゴのマス列
+  function generateBingo() {
+    const selected = universitySelect.value;
+    if (!selected) return;
 
+    previousBingoLine = null;
 
-  const filtered = bingoData.filter(item => !item.exclude.includes(selected));
-  const shuffled = filtered.sort(() => 0.5 - Math.random());
-  const selected16 = shuffled.slice(0, 16);
+    const filtered = bingoData.filter(item => !item.exclude.includes(selected));
+    const shuffled = filtered.sort(() => 0.5 - Math.random());
+    const selected16 = shuffled.slice(0, 16);
 
-  const freeIndexes = [5, 6, 9, 10];
-  const randomFree = freeIndexes[Math.floor(Math.random() * freeIndexes.length)];
-  selected16[randomFree] = { text: "FREE", exclude: [] };
+    const freeIndexes = [5, 6, 9, 10];
+    const randomFree = freeIndexes[Math.floor(Math.random() * freeIndexes.length)];
+    selected16[randomFree] = { text: "FREE", exclude: [] };
 
-  bingoBoard.innerHTML = '';
-  selected16.forEach((item, i) => {
-    const div = document.createElement('div');
-    div.className = 'cell';
-    div.textContent = item.text;
-    if (item.text === "FREE") {
-      div.classList.add('free', 'selected');
-    }
- div.addEventListener('click', () => {
-  if (!div.classList.contains('free') && !div.classList.contains('selected')) {
-    div.classList.add('selected');
-    setTimeout(checkBingo, 0);  // ← ほんの少し遅らせて実行する
+    bingoBoard.innerHTML = '';
+    selected16.forEach((item, i) => {
+      const div = document.createElement('div');
+      div.className = 'cell';
+      div.textContent = item.text;
+
+      if (item.text === "FREE") {
+        div.classList.add('free', 'selected');
+      }
+
+      div.addEventListener('click', () => {
+        if (div.classList.contains('free')) return;
+
+        // toggle selected class
+        div.classList.toggle('selected');
+        checkBingo();
+      });
+
+      bingoBoard.appendChild(div);
+    });
   }
-});
 
+  function checkBingo() {
+    const cells = [...bingoBoard.children];
 
+    // 一旦全てのビンゴヒットを外す
+    cells.forEach(cell => cell.classList.remove('bingo-hit'));
 
-    bingoBoard.appendChild(div);
-  });
-}
+    const selectedIndexes = cells
+      .map((c, i) => c.classList.contains('selected') ? i : -1)
+      .filter(i => i !== -1);
 
+    const lines = [
+      [0,1,2,3], [4,5,6,7], [8,9,10,11], [12,13,14,15],
+      [0,4,8,12], [1,5,9,13], [2,6,10,14], [3,7,11,15],
+      [0,5,10,15], [3,6,9,12]
+    ];
 
+    const newBingoLine = lines.find(line => line.every(i => selectedIndexes.includes(i)));
 
-let alreadyBingo = false; // ← 最初はfalse
+    if (newBingoLine) {
+      newBingoLine.forEach(i => cells[i].classList.add('bingo-hit'));
 
-function checkBingo() {
-  const cells = [...bingoBoard.children];
-  const selectedIndexes = cells
-    .map((c, i) => c.classList.contains('selected') ? i : -1)
-    .filter(i => i !== -1);
-
-  const lines = [
-    [0,1,2,3], [4,5,6,7], [8,9,10,11], [12,13,14,15],
-    [0,4,8,12], [1,5,9,13], [2,6,10,14], [3,7,11,15],
-    [0,5,10,15], [3,6,9,12]
-  ];
-
-  // いったんすべての .bingo-hit を除去
-  cells.forEach(cell => cell.classList.remove('bingo-hit'));
-
-  // 新たに成立しているビンゴラインを探す
-  const newBingoLine = lines.find(line => line.every(i => selectedIndexes.includes(i)));
-
-  if (newBingoLine) {
-    newBingoLine.forEach(i => cells[i].classList.add('bingo-hit'));
-
-    // 前回のラインと違えば演出
-    if (
-      !previousBingoLine ||
-      previousBingoLine.length !== newBingoLine.length ||
-      !previousBingoLine.every((val, idx) => val === newBingoLine[idx])
-    ) {
-      bingoMessage.style.display = 'block';
-      setTimeout(() => {
-        bingoMessage.style.display = 'none';
-      }, 3000);
-      previousBingoLine = [...newBingoLine];
+      if (
+        !previousBingoLine ||
+        previousBingoLine.length !== newBingoLine.length ||
+        !previousBingoLine.every((val, idx) => val === newBingoLine[idx])
+      ) {
+        bingoMessage.style.display = 'block';
+        setTimeout(() => {
+          bingoMessage.style.display = 'none';
+        }, 3000);
+        previousBingoLine = [...newBingoLine];
+      }
+    } else {
+      previousBingoLine = null;
     }
-  } else {
-    previousBingoLine = null; // ビンゴ状態解除
   }
-}
-
-
-
   </script>
 </body>
 </html>
