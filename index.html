@@ -64,49 +64,51 @@
     max-width: 500px;
   }
 
-  .cell {
-    background-color: rgba(255, 255, 255, 0.9); 
-    border-radius: 12px;
-    border: 2px solid #ccc;
-    padding: 0.5rem;
-    text-align: center;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    font-size: clamp(0.7rem, 2.2vw, 0.95rem);
-    user-select: none;
-    color: #222;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100px;
-    box-sizing: border-box;
-    text-align: center;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    line-height: 1.2;
-    font-weight: bold;
-  }
-
-  .cell:hover:not(.selected):not(.free) {
-  background-color: #e0f7ff; /* ← hover時の色だけ変更OK */
-　}
-
-.cell.selected {
-  background-color: #7ecfff !important; /* 濃い青で視認性アップ */
-  color: #fff;
+.cell {
+  background-color: rgba(255, 255, 255, 0.9); /* ← 通常状態（白系半透明） */
+  border-radius: 12px;
+  border: 2px solid #ccc;
+  padding: 0.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: clamp(0.7rem, 2.2vw, 0.95rem);
+  user-select: none;
+  color: #222;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
+  box-sizing: border-box;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  line-height: 1.2;
   font-weight: bold;
 }
 
-/* ← ここに追加 */
-.cell.selected:hover {
-  background-color: #7ecfff !important;
+.cell:hover:not(.selected):not(.free) {
+  background-color: #e0f7ff; /* ← 通常のホバー時（明るい青） */
+}
+
+.cell.selected {
+  background-color: #7ecfff !important; /* ← 選択状態（やや濃い青） */
   color: #fff;
 }
 
-  .cell.free {
-    background-color: #a7e6b2 !important;
-    font-weight: bold;
-  }
+.cell.selected:hover {
+  background-color: #5ec5f8 !important; /* ← 選択＋ホバー状態（やや濃い） */
+}
+
+.cell.bingo-hit {
+  background-color: gold !important;
+  color: #000;
+  font-weight: bold;
+}
+
+.cell.free {
+  background-color: #a7e6b2 !important;
+  font-weight: bold;
+}
 
  .bingo-message {
   margin-top: 1rem;
