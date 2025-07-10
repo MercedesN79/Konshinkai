@@ -296,10 +296,12 @@ function generateBingo() {
       div.classList.add('free', 'selected');
     }
     div.addEventListener('click', () => {
-      if (!div.classList.contains('free')) {
-        div.classList.toggle('selected');
-        checkBingo();
-      }
+  if (!div.classList.contains('free')) {
+    div.classList.toggle('selected'); // ← 先に選択状態にする
+    checkBingo(); // ← そのあとでチェックする
+  }
+});
+
     });
     bingoBoard.appendChild(div);
   });
