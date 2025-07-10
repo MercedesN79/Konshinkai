@@ -267,19 +267,15 @@
     { text: "初対面の人と話すのは平気", exclude: [] }
     ];
 
-  const universitySelect = document.getElementById('universitySelect');
+const universitySelect = document.getElementById('universitySelect');
   const bingoBoard = document.getElementById('bingoBoard');
   const bingoMessage = document.getElementById('bingoMessage');
 
   universitySelect.addEventListener('change', generateBingo);
 
-  let allBingoIndexes = new Set();
-
   function generateBingo() {
     const selected = universitySelect.value;
     if (!selected) return;
-
-    allBingoIndexes = new Set(); // ← 状態初期化
 
     const filtered = bingoData.filter(item => !item.exclude.includes(selected));
     const shuffled = filtered.sort(() => 0.5 - Math.random());
@@ -319,27 +315,29 @@
       [0,5,10,15], [3,6,9,12]
     ];
 
-    // 現在の全ビンゴマス集合を初期化
-    const newBingoIndexes = new Set();
+    // 今回のビンゴ成立マスを記録
+    const currentBingoIndexes = new Set();
+    let bingoHappened = false;
 
-    // ビンゴ成立ラインをすべて収集
-    const matchedLines = lines.filter(line =>
-      line.every(i => selectedIndexes.includes(i))
-    );
+    lines.forEach(line => {
+      const isBingo = line.every(i => selectedIndexes.includes(i));
+      if (isBingo) {
+        line.forEach(i => currentBingoIndexes.add(i));
+        bingoHappened = true;
+      }
+    });
 
-    matchedLines.forEach(line => line.forEach(i => newBingoIndexes.add(i)));
-
-    // 各セルの状態更新
+    // すべてのマスのスタイルを更新
     cells.forEach((cell, i) => {
-      if (newBingoIndexes.has(i)) {
+      if (currentBingoIndexes.has(i)) {
         cell.classList.add('bingo-hit');
-        allBingoIndexes.add(i); // 過去のビンゴマスにも保持
-      } else if (!allBingoIndexes.has(i)) {
+      } else {
         cell.classList.remove('bingo-hit');
       }
     });
 
-    if (matchedLines.length > 0) {
+    // 演出（ポップアップ表示）
+    if (bingoHappened) {
       bingoMessage.style.display = 'block';
       setTimeout(() => {
         bingoMessage.style.display = 'none';
