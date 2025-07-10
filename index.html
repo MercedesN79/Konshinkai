@@ -101,18 +101,34 @@
   }
 
   .bingo-message {
-    margin-top: 1rem;
-    font-size: 1.2rem;
-    color: #2b9348;
-    display: none;
-  }
+  position: fixed;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2rem;
+  padding: 1rem 2rem;
+  background: rgba(0, 128, 0, 0.85); /* 濃い緑で目立つ */
+  color: #fff;
+  border: 3px solid #fff;
+  border-radius: 10px;
+  display: none;
+  z-index: 1000;
+  animation: pop 1s ease-in-out infinite alternate;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
+}
 
-  @media (max-width: 600px) {
-    .cell {
-      font-size: clamp(0.65rem, 2vw, 0.85rem);
-      padding: 0.4rem;
-      height: 90px;
-    }
+@keyframes pop {
+  0% { transform: translate(-50%, -50%) scale(1); }
+  100% { transform: translate(-50%, -50%) scale(1.1); }
+}
+
+/* ビンゴ成立マスのスタイル */
+.cell.bingo-hit {
+  background-color: gold !important;
+  color: #000;
+  font-weight: bold;
+}
+
     select {
       width: 90%;
     }
@@ -277,16 +293,28 @@
     }
 
     function checkBingo() {
-      const cells = [...bingoBoard.children];
-      const indexes = cells.map((c, i) => c.classList.contains('selected') ? i : -1).filter(i => i !== -1);
-      const lines = [
-        [0,1,2,3], [4,5,6,7], [8,9,10,11], [12,13,14,15],
-        [0,4,8,12], [1,5,9,13], [2,6,10,14], [3,7,11,15],
-        [0,5,10,15], [3,6,9,12]
-      ];
-      const hasBingo = lines.some(line => line.every(i => indexes.includes(i)));
-      bingoMessage.style.display = hasBingo ? 'block' : 'none';
+  const cells = [...bingoBoard.children];
+  const indexes = cells.map((c, i) => c.classList.contains('selected') ? i : -1).filter(i => i !== -1);
+  const lines = [
+    [0,1,2,3], [4,5,6,7], [8,9,10,11], [12,13,14,15],
+    [0,4,8,12], [1,5,9,13], [2,6,10,14], [3,7,11,15],
+    [0,5,10,15], [3,6,9,12]
+  ];
+
+  // 既存のbingo-hitクラスをリセット
+  cells.forEach(cell => cell.classList.remove('bingo-hit'));
+
+  const hasBingo = lines.some(line => {
+    const isBingo = line.every(i => indexes.includes(i));
+    if (isBingo) {
+      line.forEach(i => cells[i].classList.add('bingo-hit'));
     }
+    return isBingo;
+  });
+
+  bingoMessage.style.display = hasBingo ? 'block' : 'none';
+}
+
   </script>
 </body>
 </html>
