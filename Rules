@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ビンゴルール</title>
+  <style>
+    body {
+      font-family: "Helvetica Neue", sans-serif;
+      background: #f9f9f9;
+      margin: 0;
+      padding: 2rem;
+      line-height: 1.6;
+    }
+    .container {
+      max-width: 700px;
+      margin: auto;
+      background: #fff;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    h2 {
+      border-bottom: 2px solid #ccc;
+      padding-bottom: 0.3rem;
+      margin-top: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>ビンゴのルール</h1>
+
+    <h2>🎯 目的</h2>
+    <p>自己紹介に基づいたマスを通じて、他大学の人と会話を楽しみましょう！</p>
+
+    <h2>🕹 遊び方</h2>
+    <ul>
+      <li>所属大学を選ぶと、該当するマスで構成されたビンゴカードが生成されます。</li>
+      <li>マスの内容に当てはまる人を探し、その場で会話してからマスをタップしましょう。</li>
+      <li>中央の1マスはランダムで「FREE」になります。</li>
+      <li>マスはタップでON/OFFが切り替え可能です。</li>
+    </ul>
+
+    <h2>🏆 ビンゴ成立</h2>
+    <ul>
+      <li>縦・横・斜めのいずれかで4マス並ぶとビンゴ成立です。</li>
+      <li>成立した列のマスは黄色に変わり、演出が表示されます。</li>
+      <li>スタッフに画面を見せて景品を受け取ってください。</li>
+    </ul>
+
+    <h2>⚠ 注意点</h2>
+    <ul>
+      <li>自分に当てはまる内容でも自分のカードに表示されないことがあります。</li>
+      <li>誰にも当てはまらないマスはスキップOKです。</li>
+      <li>景品の内容はスタッフの指示に従ってください。</li>
+    </ul>
+
+    <p style="text-align:center; margin-top:2rem;">
+      <a href="index.html">← ビンゴに戻る</a>
+    </p>
+  </div>
+</body>
+</html>
